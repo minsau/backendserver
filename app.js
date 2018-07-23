@@ -23,6 +23,7 @@ var userRoutes = require('./routes/usuarios');
 var loginRoutes = require('./routes/login');
 var hospitalRoutes = require('./routes/hospitales');
 var medicoRoutes = require('./routes/medicos');
+var busquedaRoutes = require('./routes/busqueda');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -31,6 +32,7 @@ app.use('/usuario', userRoutes);
 app.use('/hospital', hospitalRoutes);
 app.use('/medico', medicoRoutes);
 app.use('/login', loginRoutes);
+app.use('/busqueda', busquedaRoutes);
 app.use('/', appRoutes);
 
 

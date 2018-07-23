@@ -5,7 +5,12 @@ var Hospital = require('../models/hospital');
 var mdAutenticación = require('../middlewares/auth');
 
 app.get('/', (req, res) => {
-  Hospital.find({},'nombre img usuario').exec( (error, hospitales) => {
+  var from = req.query.from || 0;
+  from = Number(from);
+  Hospital.find({},'nombre img usuario')
+    .skip(from)
+    .limit(5)
+    .populate('usuario', 'nombre email').exec( (error, hospitales) => {
     if (error) {
       return res.status(500).json({
         ok: false,
@@ -13,10 +18,13 @@ app.get('/', (req, res) => {
         error
       });
     } else {
-      res.status(200).json({
-        ok: true,
-        hospitales
-      });
+      Hospital.count({}, (err, total) => {
+        res.status(200).json({
+          ok: true,
+          total,
+          hospitales
+        });
+      })
     }
   });
 });

@@ -7,7 +7,12 @@ var mdAutenticación = require('../middlewares/auth');
 
 // Rutas
 app.get('/', (req, res) => {
-  Usuario.find({},'nombre email role img').exec( (error, usuarios) => {
+  var from = req.query.from || 0;
+  from = Number(from);
+  Usuario.find({},'nombre email role img')
+    .skip(from)
+    .limit(5)
+    .exec( (error, usuarios) => {
     if (error) {
       return res.status(500).json({
         ok: false,
@@ -15,10 +20,13 @@ app.get('/', (req, res) => {
         error
       });
     } else {
-      res.status(200).json({
-        ok: true,
-        usuarios
-      });
+      Usuario.count({}, (err, total) => {
+        res.status(200).json({
+          ok: true,
+          total,
+          usuarios
+        });
+      })
     }
   });
 });
