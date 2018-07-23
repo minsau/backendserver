@@ -21,11 +21,15 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, res) =
 var appRoutes = require('./routes/app');
 var userRoutes = require('./routes/usuarios');
 var loginRoutes = require('./routes/login');
+var hospitalRoutes = require('./routes/hospitales');
+var medicoRoutes = require('./routes/medicos');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.use('/usuario', userRoutes);
+app.use('/hospital', hospitalRoutes);
+app.use('/medico', medicoRoutes);
 app.use('/login', loginRoutes);
 app.use('/', appRoutes);
 
