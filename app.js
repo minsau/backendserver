@@ -24,6 +24,7 @@ var loginRoutes = require('./routes/login');
 var hospitalRoutes = require('./routes/hospitales');
 var medicoRoutes = require('./routes/medicos');
 var busquedaRoutes = require('./routes/busqueda');
+var uploadRoutes = require('./routes/upload');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -33,6 +34,7 @@ app.use('/hospital', hospitalRoutes);
 app.use('/medico', medicoRoutes);
 app.use('/login', loginRoutes);
 app.use('/busqueda', busquedaRoutes);
+app.use('/upload', uploadRoutes);
 app.use('/', appRoutes);
 
 

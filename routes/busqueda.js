@@ -6,6 +6,41 @@ var Medico = require('../models/medico');
 var Usuario = require('../models/usuario');
 
 // Rutas
+
+// ====================================
+// Busqueda por collección
+// ====================================
+
+app.get('/specific/:table/:search', (req, res) => {
+  var table = req.params.table;
+  var search = req.params.search;
+  var regex = new RegExp(search, 'i');
+  var promesa = null;
+  switch(table){
+    case 'medicos':
+      promesa = busquedaMedicos(regex);
+      break;
+    case 'usuarios':
+      promesa = busquedaUsuarios(regex);
+      break;
+    case 'hospitales':
+      promesa = busquedaHospitales(regex);
+      break;
+  }
+
+  promesa.then( data => {
+    res.status(200).json({
+      ok: true,
+      mensaje: 'Petición realizada correctamente',
+      data
+    });
+  });
+});
+
+// ====================================
+// Busqueda en todas las tablas
+// ====================================
+
 app.get('/all/:busqueda', (req, res) => {
   var search = req.params.busqueda;
   var regex = new RegExp(search, 'i');
@@ -43,7 +78,9 @@ function busquedaMedicos(regex) {
 
 function busquedaUsuarios(regex) {
   return new Promise((resolve, reject) => {
-    Usuario.find({ nombre: regex }, (err, usuarios) => {
+    Usuario.find({}, 'nombre email')
+    .or([{ nombre: regex }, { email: regex }])
+    .exec((err, usuarios) => {
       if(err) { reject(err); }
       resolve(usuarios);
     })
