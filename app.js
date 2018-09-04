@@ -24,10 +24,12 @@ var loginRoutes = require('./routes/login');
 var hospitalRoutes = require('./routes/hospitales');
 var medicoRoutes = require('./routes/medicos');
 var busquedaRoutes = require('./routes/busqueda');
+var uploadRoutes = require('./routes/upload');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.use('/upload', uploadRoutes)
 app.use('/usuario', userRoutes);
 app.use('/hospital', hospitalRoutes);
 app.use('/medico', medicoRoutes);
