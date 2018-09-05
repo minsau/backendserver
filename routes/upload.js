@@ -1,6 +1,13 @@
 var express = require('express');
-var app = express();
 var fileUpload = require('express-fileupload');
+var fs = require('fs');
+
+var app = express();
+
+var Usuario = require('../models/usuario');
+var Hospital = require('../models/hospital');
+var Medico = require('../models/medico');
+
 app.use(fileUpload());
 // Rutas
 app.put('/:tipo/:id', (req, res) => {
@@ -55,11 +62,62 @@ app.put('/:tipo/:id', (req, res) => {
         }
       });
     }
-    res.status(200).json({
-      ok: true,
-      mensaje: 'Petición realizada correctamente'
-    });
+    console.log(id);
+    uploadByType(tipo, id, fileName, res);
   });
 });
+
+function uploadByType(type, id, fileName, res){
+  switch(type){
+    case 'medicos':
+      Medico.findById(id, (err, medico) => {
+        var oldPath = './uploads/medicos/' + medico.img;
+        if(fs.existsSync(oldPath)){
+          fs.unlink(oldPath);
+        }
+        medico.img = fileName;
+        medico.save( (err, medicoUpdated) => {
+          return res.status(200).json({
+            ok: true,
+            mensaje: 'Imagen de medico actualizada',
+            medico: medicoUpdated
+          });
+        });
+      })
+    break;
+    case 'hospitales':
+      Hospital.findById(id, (err, hospital) => {
+        var oldPath = './uploads/hospitales/' + hospital.img;
+        if(fs.existsSync(oldPath)){
+          fs.unlink(oldPath);
+        }
+        hospital.img = fileName;
+        hospital.save( (err, hospitalUpdated) => {
+          return res.status(200).json({
+            ok: true,
+            mensaje: 'Imagen de hospital actualizada',
+            hospital: hospitalUpdated
+          });
+        });
+      });
+    break;
+    case 'usuarios':
+      Usuario.findById(id, (err, usuario) => {
+        var oldPath = './uploads/usuarios/' + usuario.img;
+        if(fs.existsSync(oldPath)){
+          fs.unlink(oldPath);
+        }
+        usuario.img = fileName;
+        usuario.save( (err, usuarioUpdated) => {
+          return res.status(200).json({
+            ok: true,
+            mensaje: 'Imagen de usuario actualizada',
+            usuario: usuarioUpdated
+          });
+        });
+      });
+    break;
+  }
+}
 
 module.exports = app;
