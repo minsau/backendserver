@@ -62,7 +62,6 @@ app.put('/:tipo/:id', (req, res) => {
         }
       });
     }
-    console.log(id);
     uploadByType(tipo, id, fileName, res);
   });
 });
