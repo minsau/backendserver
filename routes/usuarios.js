@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.post('/', mdAutenticación.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
   var body = req.body;
   var usuario = new Usuario({
     nombre: body.nombre,
