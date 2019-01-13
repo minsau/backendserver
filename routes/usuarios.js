@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   var body = req.body;
   var usuario = new Usuario({
-    nombre: body.nombre,
+    nombre: body.name,
     email: body.email,
     password: bcrypt.hashSync(body.password, 10),
     img: body.img,

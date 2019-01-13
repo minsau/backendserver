@@ -125,7 +125,8 @@ app.post('/', (req, res) => {
       return res.status(200).json({
         ok: true,
         token,
-        id: usuario._id
+        id: usuario._id,
+        usuario
       });
     }
   });
